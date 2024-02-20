@@ -8,11 +8,11 @@ class SchoolApiImpl(private var retrofit : Retrofit) : SchoolApi {
 
     override suspend fun getSchools(token : String, select : String) : List<School> {
         val service = retrofit.create(SchoolApi::class.java)
-        return service.getSchools(token)
+        return service.getSchools(token, select)
     }
 
     override suspend fun getSatScores(token : String, select : String): List<SchoolSatScores> {
         val service = retrofit.create(SchoolApi::class.java)
-        return service.getSatScores(token)
+        return service.getSatScores(token, select)
     }
 }

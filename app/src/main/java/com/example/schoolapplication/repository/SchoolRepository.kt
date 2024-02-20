@@ -5,6 +5,7 @@ import com.example.schoolapplication.repository.data.SchoolWrapper
 import androidx.compose.runtime.mutableStateListOf
 import com.example.schoolapplication.data.School
 import com.example.schoolapplication.data.SchoolSatScores
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +17,11 @@ class SchoolRepository(private val apiImpl : SchoolApi) {
 
     fun loadSchools() {
         // get schools and then zip
-        CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
+        val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            throwable.printStackTrace()
+        }
+
+        CoroutineScope(Dispatchers.IO + coroutineExceptionHandler).launch(Dispatchers.IO) {
             val schoolList = apiImpl.getSchools()
             val schoolSatScoresList = apiImpl.getSatScores()
 

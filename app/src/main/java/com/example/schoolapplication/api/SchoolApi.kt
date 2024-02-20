@@ -10,13 +10,13 @@ import retrofit2.http.Query
 interface SchoolApi {
     @GET(BuildConfig.ENDPOINT_SCHOOLS)
     suspend fun getSchools(
-        @Query("\$\$app_token=") token : String = BuildConfig.APP_TOKEN,
-        @Query("\$select=") select : String = BuildConfig.SELECT_SCHOOL_COLUMN_QUERY
+        @Query("\$\$app_token", encoded = true) token : String = BuildConfig.APP_TOKEN,
+        @Query("\$select=", encoded = true) select : String = BuildConfig.SELECT_SCHOOL_COLUMN_QUERY
     ) : List<School>
 
     @GET(BuildConfig.ENDPOINT_SCHOOL_SAT_SCORES)
     suspend fun getSatScores(
-        @Header("\$\$app_token") token : String = BuildConfig.APP_TOKEN,
-        @Query("\$select=") select : String = BuildConfig.SELECT_SCHOOL_SAT_SCORES_COLUMN_QUERY
+        @Query("\$\$app_token", encoded = true) token : String = BuildConfig.APP_TOKEN,
+        @Query("\$select=", encoded = true) select : String = BuildConfig.SELECT_SCHOOL_SAT_SCORES_COLUMN_QUERY
     ) : List<SchoolSatScores>
 }
