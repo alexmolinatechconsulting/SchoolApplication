@@ -62,7 +62,7 @@ fun SchoolWithSatScoresList(sr : SchoolRepository) {
                                 if(isExpandedMap[it]){
                                     //chevron button down as a second element of the row
                                     Column {
-
+                                        Text(text = "")
                                     }
                                 }
                             }
