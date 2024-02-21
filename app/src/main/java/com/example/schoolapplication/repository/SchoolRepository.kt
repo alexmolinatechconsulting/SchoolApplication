@@ -43,6 +43,11 @@ class SchoolRepository(private val apiImpl : SchoolApi) {
             }
 
             for(schoolEntry in zip.entries) {
+                if(schoolEntry.value.satCriticalReadingAvgScore.equals(null) ||
+                    schoolEntry.value.satMathAvgScore.equals(null) ||
+                    schoolEntry.value.satWritingAvgScore.equals(null)) {
+                    continue;
+                }
                 _schools.add(schoolEntry.value)
             }
         }
