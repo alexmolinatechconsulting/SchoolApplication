@@ -28,17 +28,17 @@ class SchoolRepository(private val apiImpl : SchoolApi) {
             // just in case the lists from the api arent one to one
             var zip = mutableMapOf<String, SchoolWrapper>()
             for(school in schoolList){
-                if(!zip.containsKey(school.name)){
-                    zip[school.name!!] =
+                if(!zip.containsKey(school.name?.lowercase())){
+                    zip[school.name!!.lowercase()] =
                         SchoolWrapper(school.name, null, null, null)
                 }
             }
 
             for(school in schoolSatScoresList){
-                if(zip.containsKey(school.name)){
-                    zip[school.name]?.satCriticalReadingAvgScore = school.satCriticalReadingAvgScore!!
-                    zip[school.name]?.satMathAvgScore = school.satMathAvgScore!!
-                    zip[school.name]?.satWritingAvgScore = school.satWritingAvgScore!!
+                if(zip.containsKey(school.name?.lowercase())){
+                    zip[school.name!!.lowercase()]?.satCriticalReadingAvgScore = school.satCriticalReadingAvgScore!!
+                    zip[school.name!!.lowercase()]?.satMathAvgScore = school.satMathAvgScore!!
+                    zip[school.name!!.lowercase()]?.satWritingAvgScore = school.satWritingAvgScore!!
                 }
             }
 
