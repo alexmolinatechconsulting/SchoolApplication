@@ -1,6 +1,7 @@
 package com.example.schoolapplication.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.schoolapplication.repository.SchoolRepository
@@ -27,7 +30,13 @@ import com.example.schoolapplication.repository.SchoolRepository
 fun SchoolWithSatScoresList(sr : SchoolRepository) {
 
     var schoolList = remember{sr.schools}
-    var isExpandedMap = BooleanArray(schoolList.size) // maybe this should be remembered
+
+    if(schoolList.size == 0) return
+
+    val isExpandedMap = remember {
+        List(schoolList.size) { index: Int -> index to false }
+            .toMutableStateMap()
+    }
 
     Scaffold(
         topBar = {
@@ -54,12 +63,16 @@ fun SchoolWithSatScoresList(sr : SchoolRepository) {
                             ) {
                                 Column {
                                     TextButton(
-                                        onClick = {isExpandedMap[it] = true},
+                                        onClick = {
+                                            if (isExpandedMap.isNotEmpty()) {
+                                                isExpandedMap[it] = !(isExpandedMap[it]!!)
+                                            }
+                                        }
                                     ){
                                         Text(text = schoolList[it].name!!)
                                     }
                                 }
-                                if(isExpandedMap[it]){
+                                if(isExpandedMap.isNotEmpty() && isExpandedMap[it]!!){
                                     //chevron button down as a second element of the row
                                     Column {
                                         Text(text = "")
@@ -67,14 +80,19 @@ fun SchoolWithSatScoresList(sr : SchoolRepository) {
                                 }
                             }
 
-                            if(isExpandedMap[it]){
+                            if(isExpandedMap.isNotEmpty() && isExpandedMap[it]!!){
                                 Row {
-                                    Text("R : ${schoolList[it].satCriticalReadingAvgScore}")
-                                    Text("M : ${schoolList[it].satMathAvgScore}")
-                                    Text("W : ${schoolList[it].satWritingAvgScore}")
+                                    Column(Modifier.padding(16.dp)) {
+                                        Text("R : ${schoolList[it].satCriticalReadingAvgScore}")
+                                    }
+                                    Column(Modifier.padding(16.dp)) {
+                                        Text("M : ${schoolList[it].satMathAvgScore}")
+                                    }
+                                    Column(Modifier.padding(16.dp)) {
+                                        Text("W : ${schoolList[it].satWritingAvgScore}")
+                                    }
                                 }
                             }
-
                             Divider()
                         }
                     }
